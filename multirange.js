@@ -1,27 +1,25 @@
 /*
  * multirange.js v0.1.4
  * (c) 2015 Ahmad Ali, ahmadalibaloch@gmail.com
- * (C) 2018-2020 Recras BV
+ * (C) 2018-2021 Recras BV
  * License: MIT
  */
 
 'use strict';
 
-angular.module('vds.multirange', ['vds.multirange.lite', 'vds.utils'])
-    .directive('vdsMultirange', function (vdsMultirangeViews) {
+angular.module('recras.timerange', ['recras.timerange.lite', 'recras.utils'])
+    .directive('recrasTimerange', function (recrasTimerangeViews) {
         return {
             required: 'ngModel',
             scope: {
                 ngModel: '=',
                 _views: '=views',
                 _view: '=view',
-                gradient: '='
             },
             template:
-                `<div class="vds-multirange-mk2-container">
-                    <vds-multirange-labels render="renderedStyle" ng-model="ngModel"></vds-multirange-labels>
-                    <vds-multirange-lite ng-model="ngModel" ng-style="renderedStyle.multirange" gradient="gradient" step="step"></vds-multirange-lite>
-                    <vds-multirange-hairlines render="renderedStyle" ng-model="units"></vds-multirange-hairlines>
+                `<div class="recras-timerange-mk2-container">
+                    <recras-timerange-lite ng-model="ngModel" ng-style="renderedStyle.multirange" step="step"></recras-timerange-lite>
+                    <recras-timerange-hairlines render="renderedStyle" ng-model="units"></recras-timerange-hairlines>
                 </div>`,
             link: function (scope, elem, attr) {
                 scope.getPercent = function (value) {
@@ -81,7 +79,7 @@ angular.module('vds.multirange', ['vds.multirange.lite', 'vds.utils'])
 
                 // set default view config
                 if (typeof scope.views === 'undefined') {
-                    scope.views = vdsMultirangeViews.DEFAULT;
+                    scope.views = recrasTimerangeViews.DEFAULT;
                     scope.view = 0;
                     scope.changeView(0);
                 }
@@ -89,7 +87,7 @@ angular.module('vds.multirange', ['vds.multirange.lite', 'vds.utils'])
             }
         };
     })
-    .directive('vdsMultirangeLabels', function () {
+    .directive('recrasTimerangeHairlines', function () {
         return {
             restrict: 'E',
             scope: {
@@ -97,50 +95,9 @@ angular.module('vds.multirange', ['vds.multirange.lite', 'vds.utils'])
                 render: '='
             },
             template:
-                `<div class="vds-multirange-mk2-labels-container" ng-style="render.container">
-                    <ul class="vds-multirange-mk2-labels" ng-style="render.content">
-                        <li class="vds-multirange-mk2-label" ng-repeat="range in ngModel" ng-style="renderRange(range)">
-                            <span ng-show="range.name && !range.editing" ng-dblclick="lblDblClick(range)">{{ range.name }}</span>
-                            <input type="text" ng-show="range.editing" ng-keydown="done($event,range)" ng-model="range.name" />
-                        </li>
-                    </ul>
-                </div>`,
-            link: function (scope, elem, attr) {
-                scope.lblDblClick = function (range) {
-                    range.editing = true;
-                    scope.backuptext = range.name;
-                };
-                scope.done = function ($event, range) {
-                    if ($event.key === 'Enter') {
-                        range.editing = false;
-                    } else if ($event.key === 'Tab') {
-                        if (range.name.length > 0) {
-                            return;
-                        }
-                        range.name = scope.backuptext;
-                        range.editing = false;
-                    }
-                };
-
-                scope.renderRange = function (range) {
-                    return {
-                        left: (range.value * 100) + '%',
-                    }
-                }
-            }
-        }
-    })
-    .directive('vdsMultirangeHairlines', function () {
-        return {
-            restrict: 'E',
-            scope: {
-                ngModel: '=',
-                render: '='
-            },
-            template:
-                `<div class="vds-multirange-mk2-hairlines-container" ng-style="render.container">
-                    <ul class="vds-multirange-mk2-hairlines" ng-style="render.content">
-                        <li class="vds-multirange-mk2-hairline" ng-repeat="hairline in hairlines" ng-style="hairline.render">
+                `<div class="recras-timerange-mk2-hairlines-container" ng-style="render.container">
+                    <ul class="recras-timerange-mk2-hairlines" ng-style="render.content">
+                        <li class="recras-timerange-mk2-hairline" ng-repeat="hairline in hairlines" ng-style="hairline.render">
                             <span>{{ hairline.label }}</span>
                         </li>
                     </ul>
@@ -175,10 +132,10 @@ angular.module('vds.multirange', ['vds.multirange.lite', 'vds.utils'])
             }
         };
     })
-    .factory('vdsMultirangeViews', function (vdsUtils) {
-        const tv = vdsUtils.time.fromTimeToValue;
-        const vt = vdsUtils.time.fromValueToTime;
-        const pad = vdsUtils.format.padZeroes;
+    .factory('recrasTimerangeViews', function (recrasUtils) {
+        const tv = recrasUtils.time.fromTimeToValue;
+        const vt = recrasUtils.time.fromValueToTime;
+        const pad = recrasUtils.format.padZeroes;
         return {
             TIME: [
                 {
@@ -245,20 +202,19 @@ angular.module('vds.multirange', ['vds.multirange.lite', 'vds.utils'])
         }
     });
 
-angular.module('vds.multirange.lite', [])
-    .directive('vdsMultirangeLite', function () {
+angular.module('recras.timerange.lite', [])
+    .directive('recrasTimerangeLite', function () {
         return {
             required: 'ngModel',
             scope: {
                 ngModel: '=',
                 step: '=',
-                gradient: '='
             },
             template:
-                `<div class="vds-multirange-container">
-                    <div class="vds-multirange-track"></div>
-                    <div class="vds-multirange-wrapper" ng-repeat="range in ngModel">
-                        <vds-range class="vds-multirange" position="range.value" min="0" max="{{ precision }}" step="{{ preciseStep }}">
+                `<div class="recras-timerange-container">
+                    <div class="recras-timerange-track"></div>
+                    <div class="recras-timerange-wrapper" ng-repeat="range in ngModel">
+                        <recras-range class="recras-timerange" position="range.value" min="0" max="{{ precision }}" step="{{ preciseStep }}">
                     </div>
                 </div>`,
             link: function (scope, elem, attr) {
@@ -312,11 +268,7 @@ angular.module('vds.multirange.lite', [])
                                 scope.ngModel[i].value = prevSliderVal;
                             }
                             //color
-                            if (scope.gradient) {
-                                colorString += scope.ngModel[i].color + " " + scope.ngModel[i].value * 100 + "%,";
-                            } else {
-                                colorString += scope.ngModel[i].color + " " + scope.ngModel[i - 1].value * 100 + "%," + scope.ngModel[i].color + " " + scope.ngModel[i].value * 100 + "%,";
-                            }
+                            colorString += scope.ngModel[i].color + " " + scope.ngModel[i - 1].value * 100 + "%," + scope.ngModel[i].color + " " + scope.ngModel[i].value * 100 + "%,";
                         } else if (i === 0) {//first
                             nextSliderVal = scope.ngModel[i + 1].value;
 
@@ -327,11 +279,7 @@ angular.module('vds.multirange.lite', [])
                                 scope.ngModel[i].value = 0;
                             }
                             //color
-                            if (scope.gradient) {
-                                colorString += scope.ngModel[i].color + " " + scope.ngModel[i].value * 100 + "%,";
-                            } else {
-                                colorString += scope.ngModel[i].color + " 0%," + scope.ngModel[i].color + " " + scope.ngModel[i].value * 100 + "%,";
-                            }
+                            colorString += scope.ngModel[i].color + " 0%," + scope.ngModel[i].color + " " + scope.ngModel[i].value * 100 + "%,";
                         } else if (i === sCount - 1) {//last
                             prevSliderVal = scope.ngModel[i - 1].value;
 
@@ -341,12 +289,8 @@ angular.module('vds.multirange.lite', [])
                             if (thisSliderVal <= prevSliderVal) {
                                 scope.ngModel[i].value = prevSliderVal;
                             }
-                            if (scope.gradient) {
-                                colorString += scope.ngModel[i].color + " " + scope.ngModel[i].value * 100 + "%,";
-                            } else {
-                                colorString += scope.ngModel[i].color + " " + scope.ngModel[i - 1].value * 100 + "%," + scope.ngModel[i].color + " " + scope.ngModel[i].value * 100 + "%,";
-                                colorString += defaultColor + " " + scope.ngModel[i].value * 100 + "%," + defaultColor;
-                            }
+                            colorString += scope.ngModel[i].color + " " + scope.ngModel[i - 1].value * 100 + "%," + scope.ngModel[i].color + " " + scope.ngModel[i].value * 100 + "%,";
+                            colorString += defaultColor + " " + scope.ngModel[i].value * 100 + "%," + defaultColor;
                         }
                     }
                     //find track bar div
@@ -358,7 +302,7 @@ angular.module('vds.multirange.lite', [])
             }
         };
     })
-    .directive('vdsRange', function ($timeout) {
+    .directive('recrasRange', function ($timeout) {
         return {
             template: '<input type="range" ng-model="rdh.mulValue">',
             restrict: 'E',
@@ -392,8 +336,8 @@ angular.module('vds.multirange.lite', [])
         }
     });
 
-angular.module('vds.utils', [])
-    .factory('vdsUtils', function () {
+angular.module('recras.utils', [])
+    .factory('recrasUtils', function () {
         const dayConst = 24 * 60 * 60 * 1000;
         return {
             time: {
