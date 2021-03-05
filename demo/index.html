@@ -1,0 +1,34 @@
+<html ng-app="multirangeDemo">
+<head>
+  <meta charset="UTF-8">
+  <title>Multirange slider</title>
+  <link rel="stylesheet" href="../multirange.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div ng-controller="DemoCtrl">
+	   <div>
+		  <input type="text" ng-model="entry" placeholder="add entry">
+		  <input type="textColor" ng-model="entryColor" placeholder="Color">
+		  <button type="button" ng-click="add()">Add</button>
+		  <input type="number" ng-model="view" placeholder="View index">
+		</div>
+		<div style="margin-bottom: 10px;">
+		  <div ng-repeat="range in rangeArray">
+		  <input style="display:block;" type="number" ng-model="range.value">
+		  <input type="text" ng-model="range.name">
+		  <input type="text" ng-model="range.color">
+		  </div>
+		</div>
+		<vds-multirange ng-model="rangeArray" style="margin-bottom: 10px;" views="views" view="view" gradient="true"></vds-multirange>
+		<vds-multirange-lite ng-model="rangeArray"></vds-multirange-lite>
+	</div>
+
+  <script src="../bower_components/angular/angular.js"></script>
+  <script src="../multirange.js"></script>
+  <script src="app.js"></script>
+  <script src="controllers.js"></script>
+  <script src="factories.js"></script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+{
+  "name": "multirange",
+  "version": "0.1.4",
+  "authors": [
+    "Ahmad Ali <ahmadalibaloch@gmail.com>",
+    "Recras <devs@recras.nl>"
+  ],
+  "description": "Multirange slider component",
+  "main": [
+    "multirange.js",
+    "multirange.css"
+  ],
+  "keywords": [
+    "multirange",
+    "slider"
+  ],
+  "license": "MIT",
+  "homepage": "ahmadalibaloch.github.io/multirange.html",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "demo"
+  ],
+  "dependencies": {
+    "angular": "^1.5.0"
+  }
+}
