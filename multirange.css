@@ -1,7 +1,7 @@
 /*
  * multirange.js v0.1.4
  * (c) 2015 Ahmad Ali, ahmadalibaloch@gmail.com
- * (C) 2018 Recras BV
+ * (C) 2018-2021 Recras BV
  * License: MIT
  */
 
@@ -160,33 +160,4 @@
     border: none;
     background: transparent;
     margin-top: -1px;
-}
-
-.vds-multirange::-ms-tooltip {
-    display: none;
-}
-
-.vds-multirange::-ms-thumb {
-    border: none;
-    height: 20px;
-    width: 10px;
-    border-radius: 4px;
-    background: rgba(66,139,202,0.75);
-}
-
-.vds-multirange::-ms-track {
-    background: transparent;
-    color: transparent;
-    border-color: transparent;
-    border-width: 6px 0;
-}
-
-.vds-multirange::-ms-fill-lower {
-    height: 1px;
-    background-color: transparent;
-}
-
-.vds-multirange::-ms-fill-upper {
-    height: 1px;
-    background-color: transparent;
 }
