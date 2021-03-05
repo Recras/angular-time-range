@@ -13,7 +13,7 @@ angular.module('timerangeDemo').controller('DemoCtrl', function ($scope, recrasT
         {value: 0.50, color: 'brown'},
     ];
 
-    $scope.views = recrasTimerangeViews.TIME;
+    $scope.view = recrasTimerangeViews.TIME;
 
     $scope.add = function () {
         $scope.rangeArray.push({

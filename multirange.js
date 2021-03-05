@@ -8,12 +8,11 @@
 'use strict';
 
 angular.module('recras.timerange', ['recras.timerange.lite', 'recras.utils'])
-    .directive('recrasTimerange', function (recrasTimerangeViews) {
+    .directive('recrasTimerange', function () {
         return {
             required: 'ngModel',
             scope: {
                 ngModel: '=',
-                _views: '=views',
                 _view: '=view',
             },
             template:
@@ -26,13 +25,7 @@ angular.module('recras.timerange', ['recras.timerange.lite', 'recras.utils'])
                     return (value * 100) + '%';
                 };
 
-                scope.changeView = function (n) {
-                    if (typeof n === 'undefined' || typeof scope.views === 'undefined') {
-                        return;
-                    }
-                    const viewCount = scope.views.length - 1;
-                    n = (n < 0) ? 0 : ((n > viewCount) ? viewCount : n);
-                    let view = scope.views[n];
+                scope.changeView = function (view) {
                     if (typeof view !== 'undefined') {
                         scope.zoom = view.zoom;
                         scope.step = view.step;
@@ -41,14 +34,8 @@ angular.module('recras.timerange', ['recras.timerange.lite', 'recras.utils'])
                     }
                 };
 
-                scope.$watch('_view', function (n) {
-                    scope.changeView(n);
-                });
-
-                scope.$watch('_views', function (views) {
-                    scope.views = views;
-                    scope.view = 0;
-                    scope.changeView(0);
+                scope.$watch('_view', function (v) {
+                    scope.changeView(v);
                 });
 
                 scope.renderer = function () {
@@ -76,14 +63,6 @@ angular.module('recras.timerange', ['recras.timerange.lite', 'recras.utils'])
                     }
                     return scope.renderedStyle = render;
                 };
-
-                // set default view config
-                if (typeof scope.views === 'undefined') {
-                    scope.views = recrasTimerangeViews.DEFAULT;
-                    scope.view = 0;
-                    scope.changeView(0);
-                }
-
             }
         };
     })
@@ -133,72 +112,24 @@ angular.module('recras.timerange', ['recras.timerange.lite', 'recras.utils'])
         };
     })
     .factory('recrasTimerangeViews', function (recrasUtils) {
-        const tv = recrasUtils.time.fromTimeToValue;
-        const vt = recrasUtils.time.fromValueToTime;
-        const pad = recrasUtils.format.padZeroes;
-        return {
-            TIME: [
+        const timeView = {
+            zoom: 0.95,
+            step: recrasUtils.time.fromTimeToValue(0, 15),
+            units: [
                 {
-                    zoom: 0.9, step: tv(0, 15), units: [
-                        {
-                            value: tv(1, 0), labeller: function (n) {
-                                return vt(n).hours + 'h'
-                            }
-                        },
-                        {value: tv(0, 30)}
-                    ]
+                    value: recrasUtils.time.fromTimeToValue(1, 0),
+                    labeller: function (n) {
+                        let h = recrasUtils.time.fromValueToTime(n).hours;
+                        return Math.floor(h % 24) + ':00';
+                    }
                 },
                 {
-                    zoom: 1.2, step: tv(0, 10), units: [
-                        {
-                            value: tv(1, 0), labeller: function (n) {
-                                return vt(n).hours + 'h'
-                            }
-                        },
-                        {value: tv(0, 30)}
-                    ]
-                },
-                {
-                    zoom: 1.4, step: tv(0, 6), units: [
-                        {
-                            value: tv(1, 0), labeller: function (n) {
-                                return vt(n).hours + 'h'
-                            }
-                        },
-                        {value: tv(0, 30)},
-                        {value: tv(0, 12)}
-                    ]
-                },
-                {
-                    zoom: 3.4, step: tv(0, 1), units: [
-                        {value: tv(1, 0)},
-                        {
-                            value: tv(0, 15), labeller: function (n) {
-                                const h = vt(n).hours;
-                                const m = vt(n).minutes;
-                                return (m == 0) ? h + 'h' : h + ':' + pad(m, 2);
-                            }
-                        },
-                        {value: tv(0, 5)}
-                    ]
-                }
-            ],
-            DEFAULT: [
-                {
-                    zoom: 0.9, step: 1 / 40, units: [{
-                        value: 1 / 10, labeller: function (n) {
-                            return n * 10
-                        }
-                    }, {value: 1 / 20,}]
-                },
-                {
-                    zoom: 1.5, step: 1 / 80, units: [{
-                        value: 1 / 20, labeller: function (n) {
-                            return n * 10
-                        }
-                    }, {value: 1 / 40,}]
+                    value: recrasUtils.time.fromTimeToValue(0, 15)
                 }
             ]
+        };
+        return {
+            TIME: timeView,
         }
     });
 
@@ -357,10 +288,5 @@ angular.module('recras.utils', [])
                     };
                 }
             },
-            format: {
-                padZeroes: function (num, size) {
-                    return num.padStart(size, '0');
-                }
-            }
         }
     });
