@@ -1,5 +1,7 @@
 'use strict';
 
+angular.module('timerangeDemo', ['recras.timerange']);
+
 angular.module('timerangeDemo').controller('DemoCtrl', function ($scope, recrasTimerangeViews) {
     // populate some data
     $scope.rangeArray = [

@@ -14,18 +14,17 @@
 		  <input type="number" ng-model="view" placeholder="View index">
 		</div>
 		<div style="margin-bottom: 10px;">
-		  <div ng-repeat="range in rangeArray">
-			  <input style="display:block;" type="number" ng-model="range.value">
+		  <div ng-repeat="range in rangeArray" style="display: flex">
+			  <input style="display:block;" type="number" ng-model="range.value" step="0.1">
 			  <input type="text" ng-model="range.color">
 		  </div>
 		</div>
-		<recras-multirange ng-model="rangeArray" style="margin-bottom: 10px;" views="views" view="view"></recras-multirange>
-		<recras-multirange-lite ng-model="rangeArray"></recras-multirange-lite>
+		<recras-timerange ng-model="rangeArray" style="margin-bottom: 10px;" views="views" view="view"></recras-timerange>
+		<recras-timerange-lite ng-model="rangeArray"></recras-timerange-lite>
 	</div>
 
   <script src="../bower_components/angular/angular.js"></script>
   <script src="../multirange.js"></script>
-  <script src="app.js"></script>
-  <script src="controllers.js"></script>
+  <script src="demo.js"></script>
 </body>
 </html>
