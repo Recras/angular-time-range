@@ -253,23 +253,12 @@ angular.module('recras.timerange.lite', [])
                     let thisSliderVal;
                     let nextSliderVal;
                     let prevSliderVal;
-                    let colorString = "";
+                    let colorArray = [];
                     const sCount = scope.ngModel.length;
                     for (let i = 0; i < sCount; i++) {
                         thisSliderVal = scope.ngModel[i].value;
-                        if (i < (sCount - 1) && i > 0) {//not last or first
-                            nextSliderVal = scope.ngModel[i + 1].value;
-                            prevSliderVal = scope.ngModel[i - 1].value;
-
-                            if (thisSliderVal >= nextSliderVal) {
-                                scope.ngModel[i].value = nextSliderVal;
-                            }
-                            if (thisSliderVal <= prevSliderVal) {
-                                scope.ngModel[i].value = prevSliderVal;
-                            }
-                            //color
-                            colorString += scope.ngModel[i].color + " " + scope.ngModel[i - 1].value * 100 + "%," + scope.ngModel[i].color + " " + scope.ngModel[i].value * 100 + "%,";
-                        } else if (i === 0) {//first
+                        if (i === 0) {
+                            // First
                             nextSliderVal = scope.ngModel[i + 1].value;
 
                             if (thisSliderVal >= nextSliderVal) {
@@ -279,8 +268,9 @@ angular.module('recras.timerange.lite', [])
                                 scope.ngModel[i].value = 0;
                             }
                             //color
-                            colorString += scope.ngModel[i].color + " 0%," + scope.ngModel[i].color + " " + scope.ngModel[i].value * 100 + "%,";
-                        } else if (i === sCount - 1) {//last
+                            colorArray.push(scope.ngModel[i].color + " 0% " + scope.ngModel[i].value * 100 + "%");
+                        } else if (i === sCount - 1) {
+                            // Last
                             prevSliderVal = scope.ngModel[i - 1].value;
 
                             if (thisSliderVal >= scope.MAX_VALUE) {
@@ -289,15 +279,27 @@ angular.module('recras.timerange.lite', [])
                             if (thisSliderVal <= prevSliderVal) {
                                 scope.ngModel[i].value = prevSliderVal;
                             }
-                            colorString += scope.ngModel[i].color + " " + scope.ngModel[i - 1].value * 100 + "%," + scope.ngModel[i].color + " " + scope.ngModel[i].value * 100 + "%,";
-                            colorString += defaultColor + " " + scope.ngModel[i].value * 100 + "%," + defaultColor;
+                            colorArray.push(scope.ngModel[i].color + " 0% " + scope.ngModel[i].value * 100 + "%");
+                            colorArray.push(defaultColor + " " + scope.ngModel[i].value * 100 + "%, " + defaultColor);
+                        } else {
+                            // Not last or first
+                            nextSliderVal = scope.ngModel[i + 1].value;
+                            prevSliderVal = scope.ngModel[i - 1].value;
+
+                            if (thisSliderVal >= nextSliderVal) {
+                                scope.ngModel[i].value = nextSliderVal;
+                            }
+                            if (thisSliderVal <= prevSliderVal) {
+                                scope.ngModel[i].value = prevSliderVal;
+                            }
+                            //color
+                            colorArray.push(scope.ngModel[i].color + " 0% " + scope.ngModel[i].value * 100 + "%");
                         }
                     }
                     //find track bar div
                     const track = angular.element(elem).find('div')[0].children[0];
                     // Update track bar color
-                    colorString = colorString.substring(0, colorString.length - 1);
-                    angular.element(track).css('background', "linear-gradient(to right, " + colorString + ")");
+                    angular.element(track).css('background', "linear-gradient(to right, " + colorArray.join(', ') + ")");
                 }, true);
             }
         };
