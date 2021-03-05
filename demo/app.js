@@ -1,3 +1,3 @@
 'use strict';
 
-angular.module('multirangeDemo', ['vds.multirange']);
+angular.module('timerangeDemo', ['recras.timerange']);
