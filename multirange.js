@@ -398,13 +398,13 @@ angular.module('vds.utils', [])
         return {
             time: {
                 fromTimeToValue: function (hours, minutes) {
-                    var d = new Date(0);
+                    let d = new Date(0);
                     d.setUTCHours(hours);
                     d.setUTCMinutes(minutes);
                     return d.getTime() / dayConst;
                 },
                 fromValueToTime: function (value) {
-                    var d = new Date(dayConst * value);
+                    let d = new Date(dayConst * value);
                     return {
                         hours: d.getUTCHours() + ((d.getUTCDate() - 1) * 24),
                         minutes: d.getUTCMinutes()
@@ -413,8 +413,7 @@ angular.module('vds.utils', [])
             },
             format: {
                 padZeroes: function (num, size) {
-                    var s = "000000000" + num;
-                    return s.substr(s.length - size);
+                    return num.padStart(size, '0');
                 }
             }
         }
