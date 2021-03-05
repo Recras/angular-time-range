@@ -5,7 +5,7 @@
  * License: MIT
  */
 
-.vds-multirange-mk2-container {
+.recras-timerange-mk2-container {
     position: relative;
     width: 100%;
     height: 110px;
@@ -13,59 +13,16 @@
     overflow-y: hidden;
 }
 
-.vds-multirange-mk2-labels-container {
-    margin-left: 5px;
-}
-
-.vds-multirange-mk2-labels {
-    position: relative;
-    width: 100%;
-    height: 35px;
-    padding: 0;
-    margin: 2px auto;
-    list-style: none;
-}
-
-.vds-multirange-mk2-label {
-    position: absolute;
-    bottom: 0;
-}
-
-.vds-multirange-mk2-label span {
-    display: inline-block;
-    margin-left: -50%;
-    font-size: 11px;
-    color: #fff;
-    font-family: 'Arial', sans-serif;
-    text-align: center;
-    background-color: rgba(0,0,0,0.75);
-    border: none;
-    border-radius: 8px;
-    padding: 4px 6px;
-}
-.vds-multirange-mk2-label input[type="text"] {
-    display: inline-block;
-    margin-left: -50%;
-    font-size: 11px;
-    color: #4C4040;
-    font-family: 'Arial', sans-serif;
-    text-align: center;
-    background-color: rgba(227, 237, 230, 0.17);
-    border: 1px solid;
-    border-radius: 8px;
-    padding: 4px 6px;
-}
-
-.vds-multirange-mk2-hairline {
+.recras-timerange-mk2-hairline {
     position: absolute;
     border-left: 1px solid black;
 }
 
-.vds-multirange-mk2-hairlines-container {
+.recras-timerange-mk2-hairlines-container {
     margin-left: 5px;
 }
 
-.vds-multirange-mk2-hairlines {
+.recras-timerange-mk2-hairlines {
     position: relative;
     width: 100%;
     height: 25px;
@@ -74,12 +31,12 @@
     list-style: none;
 }
 
-.vds-multirange-mk2-hairline {
+.recras-timerange-mk2-hairline {
     position: absolute;
     border-left: 1px solid rgba(0,0,0,0.6);
 }
 
-.vds-multirange-mk2-hairline span {
+.recras-timerange-mk2-hairline span {
     display: inline-block;
     margin-left: -50%;
     margin-top: 14px;
@@ -88,21 +45,21 @@
     font-family: 'Arial', sans-serif;
 }
 
-.vds-multirange-container {
+.recras-timerange-container {
     position: relative;
     width: 100%;
     height: 20px;
     /* DO NOT MODIFY MARGIN */
 }
 
-.vds-multirange-wrapper {
+.recras-timerange-wrapper {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
 }
 
-.vds-multirange-track {
+.recras-timerange-track {
     position: absolute;
     top: 8px;
     left: 0;
@@ -113,7 +70,8 @@
     background-color: rgba(210,210,210,0.8);
 }
 
-.vds-multirange {
+.recras-timerange {
+    background-color: transparent; /* Firefox fix */
     -webkit-appearance: none;
     width: 100%;
     margin: 1px 0 0 0;
@@ -122,16 +80,16 @@
     box-shadow:none;
 }
 
-.vds-multirange:focus {
+.recras-timerange:focus {
     outline: none;
 }
 
 /*http://stackoverflow.com/questions/18794026/remove-dotted-outline-from-range-input-element-in-firefox*/
-.vds-multirange::-moz-focus-outer {
+.recras-timerange::-moz-focus-outer {
     border: 0;
 }
 
-.vds-multirange::-webkit-slider-thumb {
+.recras-timerange::-webkit-slider-thumb {
     -webkit-appearance: none;
     border: none;
     height: 20px;
@@ -140,14 +98,14 @@
     background: rgba(66,139,202,0.75);
 }
 
-.vds-multirange::-webkit-slider-runnable-track {
+.recras-timerange::-webkit-slider-runnable-track {
     height: 1px;
     border: none;
     background: transparent;
     margin-top: -1px;
 }
 
-.vds-multirange::-moz-range-thumb {
+.recras-timerange::-moz-range-thumb {
     border: none;
     height: 20px;
     width: 10px;
@@ -155,7 +113,7 @@
     background: rgba(66,139,202,0.75);
 }
 
-.vds-multirange::-moz-range-track {
+.recras-timerange::-moz-range-track {
     height: 1px;
     border: none;
     background: transparent;
