@@ -82,15 +82,15 @@ angular.module('recras.timerange', ['recras.timerange.lite', 'recras.utils'])
                     </ul>
                 </div>`,
             link: function (scope, elem, attr) {
-                scope.$watch('ngModel', function (n) {
-                    if (typeof n === 'undefined') {
+                scope.$watch('ngModel', function (units) {
+                    if (typeof units === 'undefined') {
                         return;
                     }
                     scope.hairlines = [];
-                    const levels = n.length;
+                    const levels = units.length;
                     const hairHeight = 12;
                     for (let i = 0; i < levels; i++) {
-                        let u = n[i];
+                        let u = units[i];
                         for (let j = 0; ((j > 1) ? Math.round(j * 1000) / 1000 : j) <= 1; j = parseFloat((j + u.value).toFixed(8))) {
                             let hairline = {
                                 render: {
@@ -174,7 +174,9 @@ angular.module('recras.timerange.lite', [])
                 const defaultColor = "rgb(235, 235, 235)";
                 //
                 scope.ngModel.map(function (el) {
-                    if (!el.color || el.color === "undefined" || el.color.length < 3) el.color = defaultColor;
+                    if (!el.color || el.color === "undefined" || el.color.length < 3) {
+                        el.color = defaultColor;
+                    }
                 });
                 scope.$watch('ngModel', function (nv, ov) {
                     if (angular.equals(nv, ov)) {
@@ -186,6 +188,9 @@ angular.module('recras.timerange.lite', [])
                     let prevSliderVal;
                     let colorArray = [];
                     const sCount = scope.ngModel.length;
+                    const colorString = function(value) {
+                        return (value / scope.maxValue) * 100 + "%";
+                    }
                     for (let i = 0; i < sCount; i++) {
                         thisSliderVal = scope.ngModel[i].value;
                         if (i === 0) {
@@ -195,11 +200,11 @@ angular.module('recras.timerange.lite', [])
                             if (thisSliderVal >= nextSliderVal) {
                                 scope.ngModel[i].value = nextSliderVal;
                             }
-                            if (thisSliderVal <= 0) {
+                            if (thisSliderVal < 0) {
                                 scope.ngModel[i].value = 0;
                             }
                             //color
-                            colorArray.push(scope.ngModel[i].color + " 0% " + scope.ngModel[i].value * 100 + "%");
+                            colorArray.push(scope.ngModel[i].color + " 0% " + colorString(scope.ngModel[i].value));
                         } else if (i === sCount - 1) {
                             // Last
                             prevSliderVal = scope.ngModel[i - 1].value;
@@ -210,8 +215,8 @@ angular.module('recras.timerange.lite', [])
                             if (thisSliderVal <= prevSliderVal) {
                                 scope.ngModel[i].value = prevSliderVal;
                             }
-                            colorArray.push(scope.ngModel[i].color + " 0% " + scope.ngModel[i].value * 100 + "%");
-                            colorArray.push(defaultColor + " " + scope.ngModel[i].value * 100 + "%, " + defaultColor);
+                            colorArray.push(scope.ngModel[i].color + " 0% " + colorString(scope.ngModel[i].value));
+                            colorArray.push(defaultColor + " " + colorString(scope.ngModel[i].value) + ", " + defaultColor);
                         } else {
                             // Not last or first
                             nextSliderVal = scope.ngModel[i + 1].value;
@@ -224,7 +229,7 @@ angular.module('recras.timerange.lite', [])
                                 scope.ngModel[i].value = prevSliderVal;
                             }
                             //color
-                            colorArray.push(scope.ngModel[i].color + " 0% " + scope.ngModel[i].value * 100 + "%");
+                            colorArray.push(scope.ngModel[i].color + " 0% " + colorString(scope.ngModel[i].value));
                         }
                     }
                     //find track bar div
