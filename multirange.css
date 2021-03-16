@@ -6,16 +6,8 @@
  */
 
 .recras-timerange-mk2-container {
-    position: relative;
-    width: 100%;
-    height: 110px;
     overflow-x: auto;
     overflow-y: hidden;
-}
-
-.recras-timerange-mk2-hairline {
-    position: absolute;
-    border-left: 1px solid black;
 }
 
 .recras-timerange-mk2-hairlines-container {

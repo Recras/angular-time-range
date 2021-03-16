@@ -114,7 +114,7 @@ angular.module('recras.timerange', ['recras.timerange.lite', 'recras.utils'])
     .factory('recrasTimerangeViews', function (recrasUtils) {
         const timeView = {
             zoom: 0.95,
-            step: recrasUtils.time.fromTimeToValue(0, 15),
+            step: 15,
             units: [
                 {
                     value: recrasUtils.time.fromTimeToValue(1, 0),
@@ -145,22 +145,13 @@ angular.module('recras.timerange.lite', [])
                 `<div class="recras-timerange-container">
                     <div class="recras-timerange-track"></div>
                     <div class="recras-timerange-wrapper" ng-repeat="range in ngModel">
-                        <recras-range class="recras-timerange" position="range.value" min="0" max="{{ precision }}" step="{{ preciseStep }}">
+                        <recras-range class="recras-timerange" ng-model="range.value" min="0" max="{{ maxValue }}" step="{{ step }}">
                     </div>
                 </div>`,
             link: function (scope, elem, attr) {
-                scope.precision = 1000000;
-                scope.preciseStep = 1;
-                scope.$watch('step', function () {
-                    if (typeof scope.step === 'undefined') {
-                        scope.preciseStep = 1;
-                    } else {
-                        scope.preciseStep = scope.step * scope.precision;
-                    }
-                });
-                //Multi-Color
-                //Sort by value
-                scope.ngModel.sort(function (a, b) {
+                scope.maxValue = 1440; // Number of minutes in 24 hours
+                // Sort by value
+                const sortValues = function (a, b) {
                     if (a.value < b.value) {
                         return -1;
                     }
@@ -168,19 +159,19 @@ angular.module('recras.timerange.lite', [])
                         return 1;
                     }
                     return 0;
-                });
+                };
+                scope.ngModel.sort(sortValues);
+                const defaultColor = 'rgb(235, 235, 235)';
 
-                //===========================================
-                const defaultColor = "rgb(235, 235, 235)";
-                //
                 scope.ngModel.map(function (el) {
                     if (!el.color || el.color === "undefined" || el.color.length < 3) {
                         el.color = defaultColor;
                     }
                 });
                 scope.$watch('ngModel', function (nv, ov) {
+                    nv.sort(sortValues);
                     if (angular.equals(nv, ov)) {
-                        return;
+                        //return;
                     }
                     // Control the sliders positions
                     let thisSliderVal;
@@ -207,10 +198,10 @@ angular.module('recras.timerange.lite', [])
                             colorArray.push(scope.ngModel[i].color + " 0% " + colorString(scope.ngModel[i].value));
                         } else if (i === sCount - 1) {
                             // Last
-                            prevSliderVal = scope.ngModel[i - 1].value;
+                            prevSliderVal = scope.ngModel[i - 1].value / scope.maxValue;
 
-                            if (thisSliderVal >= scope.MAX_VALUE) {
-                                scope.ngModel[i].value = scope.MAX_VALUE;
+                            if (thisSliderVal > scope.maxValue) {
+                                scope.ngModel[i].value = scope.maxValue;
                             }
                             if (thisSliderVal <= prevSliderVal) {
                                 scope.ngModel[i].value = prevSliderVal;
@@ -240,37 +231,11 @@ angular.module('recras.timerange.lite', [])
             }
         };
     })
-    .directive('recrasRange', function ($timeout) {
+    .directive('recrasRange', function () {
         return {
-            template: '<input type="range" ng-model="rdh.mulValue">',
+            template: '<input type="range" value="ngModel">',
             restrict: 'E',
             replace: true,
-            scope: {
-                position: '='
-            },
-            link: function (scope, elem, attr) {
-                const RangeDataHelper = function (value, multiplier) {
-                    this.value = isNaN(value) ? 0 : value;
-                    this.multiplier = multiplier;
-                    Object.defineProperty(this, 'mulValue', {
-                        get: function () {
-                            return (parseFloat(this.value) * this.multiplier) + '';
-                        },
-                        set: function (n) {
-                            this.value = parseInt(n) / this.multiplier;
-                            scope.position = this.value;
-                        }
-                    });
-                };
-                scope.$watch('position', function (n) {
-                    if (typeof scope.rdh === 'undefined') {
-                        scope.rdh = new RangeDataHelper(n, parseInt(attr.max) || 100);
-                    } else {
-                        // scope.rdh.multiplier = parseInt(attr.max) || 100;
-                        scope.rdh.value = n;
-                    }
-                });
-            }
         }
     });
 

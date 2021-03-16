@@ -1,28 +1,27 @@
 <html ng-app="timerangeDemo">
 <head>
-  <meta charset="UTF-8">
-  <title>Timerange slider</title>
-  <link rel="stylesheet" href="../multirange.css">
+    <meta charset="UTF-8">
+    <title>Timerange slider</title>
+    <link rel="stylesheet" href="../multirange.css">
 </head>
 <body>
 
-  <div ng-controller="DemoCtrl">
-	   <div>
-		  <input type="text" ng-model="entry" placeholder="add entry">
-		  <input type="textColor" ng-model="entryColor" placeholder="Color">
-		  <button type="button" ng-click="add()">Add</button>
-		</div>
-		<div style="margin-bottom: 10px;">
-		  <div ng-repeat="range in rangeArray" style="display: flex">
-			  <input style="display:block;" type="number" ng-model="range.value" step="0.1">
-			  <input type="text" ng-model="range.color">
-		  </div>
-		</div>
-		<recras-timerange ng-model="rangeArray" style="margin-bottom: 10px;" view="view"></recras-timerange>
-	</div>
+<div ng-controller="DemoCtrl">
+    <div>
+        <input type="number" ng-model="entry" step="15" placeholder="Add entry">
+        <input type="color" ng-model="entryColor">
+        <button type="button" ng-click="add()">Add</button>
+    </div>
+    <ul>
+        <li ng-repeat="range in rangeArray">
+            <input type="number" ng-model="range.value" step="15">
+            <input type="color" ng-model="range.color">
+    </ul>
+    <recras-timerange ng-model="rangeArray" view="view"></recras-timerange>
+</div>
 
-  <script src="../bower_components/angular/angular.js"></script>
-  <script src="../multirange.js"></script>
-  <script src="demo.js"></script>
+<script src="../bower_components/angular/angular.js"></script>
+<script src="../multirange.js"></script>
+<script src="demo.js"></script>
 </body>
 </html>
