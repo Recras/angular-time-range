@@ -12,15 +12,22 @@ angular.module('recras.timerange', ['recras.timerange.lite', 'recras.utils'])
         return {
             required: 'ngModel',
             scope: {
+                maxValue: '<?',
                 ngModel: '=',
                 _view: '=view',
             },
             template:
                 `<div class="recras-timerange-mk2-container">
-                    <recras-timerange-lite ng-model="ngModel" ng-style="renderedStyle.multirange" step="step"></recras-timerange-lite>
+                    <recras-timerange-lite ng-model="ngModel" ng-style="renderedStyle.multirange" step="step" max-value="maxValue"></recras-timerange-lite>
                     <recras-timerange-hairlines render="renderedStyle" ng-model="units"></recras-timerange-hairlines>
                 </div>`,
             link: function (scope, elem, attr) {
+                if (scope.maxValue === undefined) {
+                    // Default to the number of minutes in 24 hours, aka a "regular" day
+                    // but allow changing this in case of DST
+                    scope.maxValue = 1440;
+                }
+
                 scope.getPercent = function (value) {
                     return (value * 100) + '%';
                 };
@@ -138,6 +145,7 @@ angular.module('recras.timerange.lite', [])
         return {
             required: 'ngModel',
             scope: {
+                maxValue: '<',
                 ngModel: '=',
                 step: '=',
             },
@@ -149,7 +157,6 @@ angular.module('recras.timerange.lite', [])
                     </div>
                 </div>`,
             link: function (scope, elem, attr) {
-                scope.maxValue = 1440; // Number of minutes in 24 hours
                 // Sort by value
                 const sortValues = function (a, b) {
                     if (a.value < b.value) {
